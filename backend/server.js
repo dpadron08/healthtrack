@@ -12,7 +12,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
-mongoose.connect(process.env.URI), {useNewUrlParser: true}
+mongoose.connect(process.env.URI, {useNewUrlParser: true})
+
 const db = mongoose.connection;
 db.on("error", () => console.log("database connection failed"))
 db.once("open", () => console.log("database connection successful"))

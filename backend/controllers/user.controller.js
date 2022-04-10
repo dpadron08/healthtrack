@@ -36,7 +36,8 @@ const registerUser = async (req, res) => {
             _id: user.id,
             first_name: user.first_name,
             last_name: user.last_name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         })
     } else {
         res.json("Invalid user data or user failed to create")
@@ -57,7 +58,8 @@ const loginUser = async (req, res) => {
             _id: user.id,
             first_name: user.first_name,
             last_name: user.last_name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         })
         return
         
@@ -73,6 +75,12 @@ const loginUser = async (req, res) => {
 // @access  Private
 const getMe = async (req, res) => {
     res.json({message: "Seeing user data"})
+}
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d'
+    })
 }
 
 module.exports = {
