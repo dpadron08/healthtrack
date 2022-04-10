@@ -1,3 +1,5 @@
+const Symptom = require("../models/symptom.model")
+
 // @desc    Get a list of symptoms
 // @route   GET /api/symptoms/
 // @access  Private
