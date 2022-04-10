@@ -3,6 +3,7 @@ const cors = require("cors")
 const { userRouter } = require("./routes/user.route.js")
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
+const symptomRouter = require("./routes/symptom.route.js")
 dotenv.config()
 
 const app = express()
@@ -20,8 +21,8 @@ db.once("open", () => console.log("database connection successful"))
 
 
 app.get("/", (req, res) => res.json({message: "Hello world!"}))
-
 app.use("/api/users", userRouter)
+app.use("/api/symptoms", symptomRouter)
 
 app.use("*", (req, res) => {
     res.status(404).json({error: "Not found!"})
