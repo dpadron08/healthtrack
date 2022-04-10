@@ -47,7 +47,25 @@ const registerUser = async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = async (req, res) => {
-    res.json({message: "Login User"})
+    const {email, password} = req.body
+    
+    // Check for user email
+    const user = await User.findOne({email})
+    console.log(user)
+    if (user && (await bcrypt.compare(password, user.password))) {
+        res.status(201).json({
+            _id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email
+        })
+        return
+        
+    } else {
+        res.json({message: "Invalid credentials"})
+        return
+    }
+
 }
 
 // @desc    Get user data
