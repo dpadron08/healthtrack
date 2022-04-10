@@ -17,8 +17,8 @@ const setSymptoms = async (req, res) => {
 // @desc    Edit a symptom
 // @route   PUT /api/symptom/:id
 // @access  Private
-const editSymptom = async (req, res) => {
-    res.status(200).json({message: "Editing a symptom"})
+const updateSymptom = async (req, res) => {
+    res.status(200).json({message: "Updating a symptom"})
 }
 
 // @desc    Delete a symptom
@@ -31,6 +31,6 @@ const deleteSymptom = async (req, res) => {
 module.exports = {
     getSymptoms,
     setSymptoms,
-    editSymptom,
+    updateSymptom,
     deleteSymptom,
 }
