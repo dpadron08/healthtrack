@@ -1,5 +1,6 @@
 const express = require("express");
 const symptomRouter = express.Router();
+const {protect} = require("../middleware/authMiddleware")
 const {
   getSymptoms,
   setSymptoms,
@@ -7,9 +8,9 @@ const {
   updateSymptom,
 } = require("../controllers/symptom.controller");
 
-symptomRouter.get("/", getSymptoms);
-symptomRouter.post("/", setSymptoms);
-symptomRouter.put("/:id", updateSymptom);
-symptomRouter.delete("/:id", deleteSymptom);
+symptomRouter.get("/", protect, getSymptoms);
+symptomRouter.post("/", protect, setSymptoms);
+symptomRouter.put("/:id", protect, updateSymptom);
+symptomRouter.delete("/:id", protect, deleteSymptom);
 
 module.exports = symptomRouter;

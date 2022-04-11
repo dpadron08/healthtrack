@@ -1,10 +1,11 @@
 const Symptom = require("../models/symptom.model")
+const User = require("../models/user.model")
 
 // @desc    Get a list of symptoms
 // @route   GET /api/symptoms/
 // @access  Private
 const getSymptoms = async (req, res) => {
-  const symptoms = await Symptom.find()
+  const symptoms = await Symptom.find( {user: req.user.id} )
   res.status(200).json( symptoms );
 };
 
@@ -12,9 +13,9 @@ const getSymptoms = async (req, res) => {
 // @route   POST /api/symptoms/
 // @access  Private
 const setSymptoms = async (req, res) => {
-  console.log("Symptom request body text: " + req.body.text)
   const symptom = await Symptom.create({
-    text: req.body.text
+    text: req.body.text,
+    user: req.user.id
   })
   if (symptom) {
     res.status(200).json(symptom);
@@ -35,6 +36,20 @@ const updateSymptom = async (req, res) => {
   if (!req.body.text) {
     res.status(400).json("Please include a text with the symptom")
   }
+
+  const user = await User.findById(req.user.id)
+  // check for user
+  if (!user) {
+    res.status(401).json({message: "User not found in update symptom"})
+    return
+  }
+
+  // make sure the logged in user matches the symptom user
+  if (symptom.user.toString() !== user.id) {
+    res.status(401).json({message: "User not authorized to make this edit"})
+    return
+  }
+
   const updatedSymptom = await Symptom.findByIdAndUpdate(req.params.id, req.body, {new: true})
   res.status(200).json(updatedSymptom);
 };
@@ -48,6 +63,20 @@ const deleteSymptom = async (req, res) => {
     res.status(400).json("No symptom of this id found to delete")
     return
   }
+
+  const user = await User.findById(req.user.id)
+  // check for user
+  if (!user) {
+    res.status(401).json({message: "User not found in delete symptom"})
+    return
+  }
+
+  // make sure the logged in user matches the symptom user
+  if (symptom.user.toString() !== user.id) {
+    res.status(401).json({message: "User not authorized to make this edit"})
+    return
+  }
+
   await symptom.remove()
   res.status(200).json({ id: req.params.id });
 };
