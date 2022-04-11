@@ -4,8 +4,8 @@ const symptomSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User'
-  },
+      ref: "User",
+    },
     text: {
       type: String,
       required: [true, "Please add a text value for symptom"],
@@ -14,4 +14,4 @@ const symptomSchema = mongoose.Schema(
   { timestamps: true, strictQuery: false }
 );
 
-module.exports = mongoose.model("Symptom", symptomSchema)
+module.exports = mongoose.model("Symptom", symptomSchema);

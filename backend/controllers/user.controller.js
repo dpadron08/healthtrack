@@ -72,8 +72,17 @@ const loginUser = async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = async (req, res) => {
-  const { _id, first_name, last_name, email } = await User.findById(req.user.id);
-  res.status(200).json({ _id: _id, first_name: first_name, last_name: last_name, email: email });
+  const { _id, first_name, last_name, email } = await User.findById(
+    req.user.id
+  );
+  res
+    .status(200)
+    .json({
+      _id: _id,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+    });
 };
 
 const generateToken = (id) => {
