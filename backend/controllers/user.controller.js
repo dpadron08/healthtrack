@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 
 // @desc    Register a user
-// @route   POST /api/users/
+// @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
