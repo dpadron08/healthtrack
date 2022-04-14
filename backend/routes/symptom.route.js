@@ -1,6 +1,6 @@
 const express = require("express");
 const symptomRouter = express.Router();
-const {protect} = require("../middleware/authMiddleware")
+const { protect } = require("../middleware/authMiddleware");
 const {
   getSymptoms,
   setSymptoms,
