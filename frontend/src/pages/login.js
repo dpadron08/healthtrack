@@ -1,35 +1,45 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 
-function Login() {
-	const [formData, setFormData] = React.useState({
-		email: "",
-		password: ""
-	})
+const Login = () => {
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+  });
 
-	const { email, password } = formData;
-	
-	const onChangeEmail = (e) => {
-		setFormData({ ...formData, email: e.target.value })
-	}
+  const { email, password } = formData;
+  let navigate = useNavigate();
 
-	const onChangePassword = (e) => {
-		setFormData({ ...formData, password: e.target.value})
-	}
+  const onChangeEmail = (e) => {
+    setFormData({ ...formData, email: e.target.value });
+  };
 
-	// alternatively, the above functions could be in one onChange
-	// const { name, value } = event.target;
+  const onChangePassword = (e) => {
+    setFormData({ ...formData, password: e.target.value });
+  };
+
+  // alternatively, the above functions could be in one onChange
+  // const { name, value } = event.target;
   // setFormData({ ...user, [name]: value });
-	// the name is the name of the var (e.target.name) and the value 
-	// is from e.target.value
+  // the name is the name of the var (e.target.name) and the value
+  // is from e.target.value
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		authService.login(formData)
-	}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    authService.login(formData).then((response) => {
+      console.log(response);
+      if (response) {
+        navigate("/", { replace: true });
+      } else {
+        console.log("Incorrect username or password");
+        alert("Incorrect username or password");
+      }
+    });
+  };
 
-	return (
-		<form>
+  return (
+    <form>
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <input
@@ -60,7 +70,7 @@ function Login() {
         Submit
       </button>
     </form>
-	);
-}
+  );
+};
 
 export default Login;

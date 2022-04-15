@@ -35,8 +35,9 @@ function App() {
         </div>
       </nav>
         <Routes>
+          <Route path="/" element={<SymptomsList />}/> 
           <Route path="/symptoms" element={<SymptomsList />}/> 
-          <Route path="/login" element={<Login/>}/>
+          <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register/>}/>
         </Routes>
       </div>
