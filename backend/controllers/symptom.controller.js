@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 // @access  Private
 const getSymptoms = async (req, res) => {
   const symptoms = await Symptom.find({ user: req.user.id });
-  res.status(200).json(symptoms);
+  res.status(200).json({symptoms: symptoms});
 };
 
 // @desc    Submit symptoms
