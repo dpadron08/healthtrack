@@ -34,7 +34,10 @@ const SymptomsList = props => {
                   </p>
                   <div className="row">
                   <Link to={"/symptoms/"+symptom._id} className="btn btn-primary col-lg-5 mx-1 mb-1">
-                    View Symptoms
+                    View/Edit Symptom
+                  </Link>
+                  <Link to={"/symptoms/"+symptom._id} className="btn btn-primary col-lg-5 mx-1 mb-1">
+                    Delete Symptom
                   </Link>
                   </div>
                 </div>

@@ -9,6 +9,15 @@ const getSymptoms = async (req, res) => {
   res.status(200).json({symptoms: symptoms});
 };
 
+// @desc    Get a particular symptom
+// @route   GET /api/symptoms/:id
+// @access  Private
+const getSymptom = async (req, res) => {
+  const id = req.params.id;
+  const symptoms = await Symptom.find({ user: req.user.id, _id:id });
+  res.status(200).json({symptoms: symptoms});
+};
+
 // @desc    Submit symptoms
 // @route   POST /api/symptoms/
 // @access  Private
@@ -87,6 +96,7 @@ const deleteSymptom = async (req, res) => {
 
 module.exports = {
   getSymptoms,
+  getSymptom,
   setSymptoms,
   updateSymptom,
   deleteSymptom,

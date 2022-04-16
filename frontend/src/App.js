@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import SymptomsList from "./pages/symptoms-list";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Symptom from "./pages/symptom";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SymptomsList />}/> 
           <Route path="/symptoms" element={<SymptomsList />}/> 
+          <Route path="/symptoms/:id" element={<Symptom />}/> 
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register/>}/>
         </Routes>

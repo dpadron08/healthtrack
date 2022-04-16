@@ -25,6 +25,17 @@ const getSymptoms = async (token) => {
   return response.data;
 };
 
+const getSymptom = async (symptomId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL + symptomId, config);
+  return response.data;
+}
+
 const deleteSymptom = async (symptomId, token) => {
   const config = {
     headers: {
@@ -36,20 +47,21 @@ const deleteSymptom = async (symptomId, token) => {
   return response.data;
 };
 
-const editSymptom = async (symptomId, token) => {
+const editSymptom = async (symptomId, symptomData, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const response = await axios.put(API_URL + symptomId, config);
+  const response = await axios.put(API_URL + symptomId, symptomData, config);
   return response.data;
 };
 
 const symptomService = {
   createSymptom,
   getSymptoms,
+  getSymptom,
   deleteSymptom,
   editSymptom,
 };
