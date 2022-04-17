@@ -44,6 +44,18 @@ const Symptom = () => {
       });
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    // local storage only stores strings
+    const token = JSON.parse(localStorage.getItem("user"))["token"];
+
+    symptomService.deleteSymptom(symptom.id, token).then((response) => {
+      console.log("SymptomID: " + symptom.id + " was deleted");
+      navigate("/", { replace: true });
+    });
+  };
+
   return (
     <div>
       <h1>Editing your symptom: </h1>
@@ -61,6 +73,10 @@ const Symptom = () => {
       </form>
       <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
         Save
+      </button>
+      <br></br>
+      <button type="submit" className="btn btn-primary" onClick={handleDelete}>
+        Delete
       </button>
     </div>
   );
