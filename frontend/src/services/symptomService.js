@@ -34,7 +34,7 @@ const getSymptom = async (symptomId, token) => {
 
   const response = await axios.get(API_URL + symptomId, config);
   return response.data;
-}
+};
 
 const deleteSymptom = async (symptomId, token) => {
   const config = {

@@ -34,15 +34,15 @@ const Symptom = () => {
     e.preventDefault();
 
     // local storage only stores strings
-    const token = JSON.parse(localStorage.getItem('user'))['token']
+    const token = JSON.parse(localStorage.getItem("user"))["token"];
 
-    symptomService.editSymptom(symptom.id, {text: symptom.text}, token)
-      .then( (response) => {
+    symptomService
+      .editSymptom(symptom.id, { text: symptom.text }, token)
+      .then((response) => {
         console.log("Updated response: " + response);
         navigate("/", { replace: true });
-      })
-
-  }
+      });
+  };
 
   return (
     <div>

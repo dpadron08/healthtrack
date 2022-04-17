@@ -13,34 +13,34 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <a href="/symptoms" className="navbar-brand">
-          HealthTrack
-        </a>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to="/symptoms" className="nav-link">
-              Symptoms
-            </Link>
-          </li>
-          <li className="nav-item" >
-            <Link to="/login" className="nav-link">
-              Login/Logout
-            </Link>
-          </li>
-          <li className="nav-item" >
-            <Link to="/register" className="nav-link">
-              Register
-            </Link>
-          </li>
-        </div>
-      </nav>
+        <nav className="navbar navbar-expand navbar-dark bg-dark">
+          <a href="/symptoms" className="navbar-brand">
+            HealthTrack
+          </a>
+          <div className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link to="/symptoms" className="nav-link">
+                Symptoms
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/login" className="nav-link">
+                Login/Logout
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/register" className="nav-link">
+                Register
+              </Link>
+            </li>
+          </div>
+        </nav>
         <Routes>
-          <Route path="/" element={<SymptomsList />}/> 
-          <Route path="/symptoms" element={<SymptomsList />}/> 
-          <Route path="/symptoms/:id" element={<Symptom />}/> 
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register/>}/>
+          <Route path="/" element={<SymptomsList />} />
+          <Route path="/symptoms" element={<SymptomsList />} />
+          <Route path="/symptoms/:id" element={<Symptom />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </div>

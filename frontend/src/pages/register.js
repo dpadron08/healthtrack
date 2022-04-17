@@ -12,7 +12,7 @@ function Register() {
 
   const { first_name, last_name, email, password1, password2 } = formData;
 
-  const onChange = () => {}
+  const onChange = () => {};
 
   return (
     <form>
