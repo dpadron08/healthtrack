@@ -7,7 +7,18 @@ const SymptomsList = (props) => {
 
   const retreiveSymptoms = () => {
     // local storage only stores strings
-    const token = JSON.parse(localStorage.getItem("user"))["token"];
+    const userCookie = JSON.parse(localStorage.getItem("user"));
+    if (!userCookie) {
+      setSymptoms([]);
+      return;
+    }
+    const token = userCookie["token"];
+
+    if (!token) {
+      setSymptoms([]);
+      console.log("Error, user cookie found with no token");
+      return;
+    }
 
     symptomService
       .getSymptoms(token)

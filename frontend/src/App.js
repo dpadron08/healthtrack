@@ -10,6 +10,10 @@ import Register from "./pages/register";
 import Symptom from "./pages/symptom";
 
 function App() {
+  const logout = () => {
+    localStorage.removeItem("user");
+  };
+
   return (
     <div className="App">
       <div className="container">
@@ -24,7 +28,7 @@ function App() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link">
+              <Link to="/login" className="nav-link" onClick={logout}>
                 Login/Logout
               </Link>
             </li>
