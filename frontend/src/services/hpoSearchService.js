@@ -3,7 +3,7 @@ import axios from "axios";
 // for /api/hpo/search/?q={query}
 const HPO_SEARCH_API_URL = "https://hpo.jax.org/api/hpo/search/";
 
-const search = async (query, max = -1, offset = 0, category = "terms") => {
+const search = async (query, max = -1, offset = 0, category = "") => {
   const FINAL_URL = `${HPO_SEARCH_API_URL}?q=${query}&max=${max}&offset=${offset}&category=${category}`;
 
   const config = {
