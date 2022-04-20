@@ -8,6 +8,7 @@ import SymptomsList from "./pages/symptoms-list";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Symptom from "./pages/symptom";
+import SymptomCreate from "./pages/symptom-create";
 
 function App() {
   const logout = () => {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/" element={<SymptomsList />} />
           <Route path="/symptoms" element={<SymptomsList />} />
           <Route path="/symptoms/:id" element={<Symptom />} />
+          <Route path="/symptoms/create" element={<SymptomCreate />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

@@ -33,37 +33,42 @@ const SymptomsList = (props) => {
   useEffect(retreiveSymptoms, []);
 
   return (
-    <div className="row">
-      {symptoms.map((symptom, index) => {
-        const symptomText = symptom.text;
-        return (
-          <div className="col-lg-4 pb-1" key={index}>
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Symptom</h5>
-                <p className="card-text">
-                  <strong>Text: </strong>
-                  {symptomText}
-                </p>
-                <div className="row">
-                  <Link
-                    to={"/symptoms/" + symptom._id}
-                    className="btn btn-primary col-lg-5 mx-1 mb-1"
-                  >
-                    View/Edit Symptom
-                  </Link>
-                  <Link
-                    to={"/symptoms/" + symptom._id}
-                    className="btn btn-primary col-lg-5 mx-1 mb-1"
-                  >
-                    Delete Symptom
-                  </Link>
+    <div>
+      <Link to={"/symptoms/create"} className="btn btn-primary mx-1 mb-1">
+        Create
+      </Link>
+      <div className="row">
+        {symptoms.map((symptom, index) => {
+          const symptomText = symptom.text;
+          return (
+            <div className="col-lg-4 pb-1" key={index}>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Symptom</h5>
+                  <p className="card-text">
+                    <strong>Text: </strong>
+                    {symptomText}
+                  </p>
+                  <div className="row">
+                    <Link
+                      to={"/symptoms/" + symptom._id}
+                      className="btn btn-primary col-lg-5 mx-1 mb-1"
+                    >
+                      View/Edit Symptom
+                    </Link>
+                    <Link
+                      to={"/symptoms/" + symptom._id}
+                      className="btn btn-primary col-lg-5 mx-1 mb-1"
+                    >
+                      Delete Symptom
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
