@@ -13,19 +13,19 @@ const SymptomCreate = () => {
     setSymptomText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    hpoSearchService.search(symptomText, 10).then((data) => {
-      const termResults = data["terms"].map((arrayItem) => {
+    var termResults;
+    await hpoSearchService.search(symptomText, 10).then((data) => {
+      termResults = data["terms"].map((arrayItem) => {
         var to_return = {
           name: arrayItem["name"],
           definition: "",
           id: arrayItem["id"],
         };
-        hpoTermService.searchTerm(arrayItem["id"]).then((termData) => {
-          to_return.definition = termData["details"]["definition"];
-          // return to_return;
-        });
+        // hpoTermService.searchTerm(arrayItem["id"]).then((termData) => {
+        //   to_return.definition = termData["details"]["definition"];
+        // });
         // return arrayItem["name"];
 
         return to_return;
@@ -40,8 +40,16 @@ const SymptomCreate = () => {
       setTerms(termResults);
       setDiseases(diseaseResults);
       setGenes(geneResults);
-      // setSuggestions(results);
     });
+
+    const newTermResults = await termResults.map(async (termResult) => {
+      var definition = "loading";
+      await hpoTermService.searchTerm(termResult.id).then((termData) => {
+        definition = termData.details.definition;
+      });
+      return { ...termResult, definition: definition };
+    });
+    setTerms(await Promise.all(newTermResults));
   };
 
   return (
@@ -63,7 +71,9 @@ const SymptomCreate = () => {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={handleSubmit}
+          onClick={async (e) => {
+            await handleSubmit(e);
+          }}
         >
           Search
         </button>
