@@ -83,13 +83,17 @@ const SymptomCreate = () => {
         <div>
           {terms.length > 0 ? (
             <ul>
-              {terms.map((term, index) => {
+              {terms.map((term) => {
                 return (
                   <li key={term.id}>
                     {" "}
                     {term.name}{" "}
                     <ul>
-                      <li>{term.definition}</li>
+                      <li>
+                        {term.definition.length > 0
+                          ? term.definition
+                          : "No definition"}
+                      </li>
                     </ul>
                   </li>
                 );
