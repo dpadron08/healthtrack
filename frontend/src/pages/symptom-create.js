@@ -1,6 +1,7 @@
 import "../App.css";
 import React from "react";
 import hpoSearchService from "../services/hpoSearchService";
+import hpoTermService from "../services/hpoTermService";
 
 const SymptomCreate = () => {
   const [symptomText, setSymptomText] = React.useState("");
@@ -16,7 +17,18 @@ const SymptomCreate = () => {
     e.preventDefault();
     hpoSearchService.search(symptomText, 10).then((data) => {
       const termResults = data["terms"].map((arrayItem) => {
-        return arrayItem["name"];
+        var to_return = {
+          name: arrayItem["name"],
+          definition: "",
+          id: arrayItem["id"],
+        };
+        hpoTermService.searchTerm(arrayItem["id"]).then((termData) => {
+          to_return.definition = termData["details"]["definition"];
+          // return to_return;
+        });
+        // return arrayItem["name"];
+
+        return to_return;
       });
       const diseaseResults = data["diseases"].map((arrayItem) => {
         return arrayItem["dbName"];
@@ -28,9 +40,6 @@ const SymptomCreate = () => {
       setTerms(termResults);
       setDiseases(diseaseResults);
       setGenes(geneResults);
-      console.log(termResults);
-      console.log(diseaseResults);
-      console.log(geneResults);
       // setSuggestions(results);
     });
   };
@@ -65,7 +74,15 @@ const SymptomCreate = () => {
           {terms.length > 0 ? (
             <ul>
               {terms.map((term, index) => {
-                return <li key={index}> {term} </li>;
+                return (
+                  <li key={term.id}>
+                    {" "}
+                    {term.name}{" "}
+                    <ul>
+                      <li>{term.definition}</li>
+                    </ul>
+                  </li>
+                );
               })}
             </ul>
           ) : (
