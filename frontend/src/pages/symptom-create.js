@@ -2,6 +2,8 @@ import "../App.css";
 import React from "react";
 import hpoSearchService from "../services/hpoSearchService";
 import hpoTermService from "../services/hpoTermService";
+import symptomService from "../services/symptomService";
+import { useNavigate } from "react-router-dom";
 
 const SymptomCreate = () => {
   const [symptomText, setSymptomText] = React.useState("");
@@ -9,11 +11,25 @@ const SymptomCreate = () => {
   const [diseases, setDiseases] = React.useState([]);
   const [genes, setGenes] = React.useState([]);
 
+  let navigate = useNavigate();
+
   const onChangeText = (e) => {
     setSymptomText(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // local storage only stores strings
+    const token = JSON.parse(localStorage.getItem("user"))["token"];
+    symptomService
+      .createSymptom({ text: symptomText }, token)
+      .then((response) => {
+        console.log("Created symptom: " + response);
+        navigate("/", { replace: true });
+      });
+  };
+
+  const handleSearch = async (e) => {
     e.preventDefault();
     var termResults;
     await hpoSearchService.search(symptomText, 10).then((data) => {
@@ -72,10 +88,17 @@ const SymptomCreate = () => {
           type="submit"
           className="btn btn-primary"
           onClick={async (e) => {
-            await handleSubmit(e);
+            await handleSearch(e);
           }}
         >
           Search
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
+          Save
         </button>
       </div>
       <div className="flex-child">
