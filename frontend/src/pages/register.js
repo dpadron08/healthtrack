@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 
+const form_style = { textAlign: "left", width: "50%" };
 function Register() {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -45,7 +46,7 @@ function Register() {
   };
 
   return (
-    <form>
+    <form style={form_style}>
       <div className="form-group">
         <label htmlFor="first_name">First name</label>
         <input

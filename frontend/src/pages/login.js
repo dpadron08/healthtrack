@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 
+const form_style = { textAlign: "left", width: "50%" };
+
 const Login = () => {
   const [formData, setFormData] = React.useState({
     email: "",
@@ -39,9 +41,11 @@ const Login = () => {
   };
 
   return (
-    <form>
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
+    <form style={form_style}>
+      <div className="mb-3">
+        <label htmlFor="email" className="form-label">
+          Email address
+        </label>
         <input
           type="email"
           className="form-control"
@@ -49,24 +53,28 @@ const Login = () => {
           name="email"
           value={email}
           aria-describedby="emailHelp"
-          placeholder="Enter email"
           onChange={onChangeEmail}
-        />
+          placeholder="Enter email address"
+        ></input>
+        <div id="emailHelp" className="form-text">
+          We'll never share your email with anyone else.
+        </div>
       </div>
-
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
         <input
           type="password"
           className="form-control"
           id="password"
           name="password"
           value={password}
-          placeholder="Enter password"
           onChange={onChangePassword}
-        />
+          placeholder="Enter password"
+        ></input>
       </div>
-      <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+      <button type="submit" class="btn btn-primary" onClick={handleSubmit}>
         Submit
       </button>
     </form>
