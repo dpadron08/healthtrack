@@ -9,6 +9,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Symptom from "./pages/symptom";
 import SymptomCreate from "./pages/symptom-create";
+import Matches from "./pages/matches";
 
 function App() {
   const logout = () => {
@@ -29,6 +30,11 @@ function App() {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/matches" className="nav-link">
+                Matches
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/login" className="nav-link" onClick={logout}>
                 Login/Logout
               </Link>
@@ -45,6 +51,7 @@ function App() {
           <Route path="/symptoms" element={<SymptomsList />} />
           <Route path="/symptoms/:id" element={<Symptom />} />
           <Route path="/symptoms/create" element={<SymptomCreate />} />
+          <Route path="/matches" element={<Matches text={"Hi"} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
