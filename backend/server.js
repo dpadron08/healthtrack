@@ -4,6 +4,7 @@ const { userRouter } = require("./routes/user.route.js");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const symptomRouter = require("./routes/symptom.route.js");
+const matchRouter = require("./routes/match.route");
 dotenv.config();
 
 const app = express();
@@ -19,9 +20,12 @@ const db = mongoose.connection;
 db.on("error", () => console.log("database connection failed"));
 db.once("open", () => console.log("database connection successful"));
 
-app.get("/", (req, res) => res.json({ message: "Hello world!" }));
+app.get("/", (req, res) =>
+  res.json({ message: "Incorrect api call. Please do /api/{resource}" })
+);
 app.use("/api/users", userRouter);
 app.use("/api/symptoms", symptomRouter);
+app.use("/api/matches", matchRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({ error: "Not found!" });
