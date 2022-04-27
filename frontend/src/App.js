@@ -51,7 +51,7 @@ function App() {
           <Route path="/symptoms" element={<SymptomsList />} />
           <Route path="/symptoms/:id" element={<Symptom />} />
           <Route path="/symptoms/create" element={<SymptomCreate />} />
-          <Route path="/matches" element={<Matches text={"Hi"} />} />
+          <Route path="/matches" element={<Matches />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

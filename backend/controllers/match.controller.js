@@ -5,8 +5,8 @@ const getMatches = async (req, res) => {
   const currentUserSymptoms = await Symptom.find({ user: req.user.id });
   const otherUserSymptoms = await Symptom.find({ user: { $ne: req.user.id } });
   const matchingSymptoms = doMatch(currentUserSymptoms, otherUserSymptoms);
-  const matchingUsers = await findMatchingUsers(matchingSymptoms);
-  res.status(200).json(matchingUsers);
+  const matchingUsersAndSymptoms = await findMatchingUsers(matchingSymptoms);
+  res.status(200).json(matchingUsersAndSymptoms);
 };
 
 // Performs a matching algorithm which returns top 10 matching symptoms
@@ -26,13 +26,14 @@ const exactStringMatch = (currentUserSymptoms, otherUserSymptoms) => {
   return matchingSymptoms;
 };
 
-// obtains only the emails of the users for which you have matching symptoms
+// obtains only the emails and symptoms of the users for which you
+// have matching symptoms
 const findMatchingUsers = async (matchingSymptoms) => {
-  const userEmails = matchingSymptoms.map(async (symptom) => {
+  const userEmailsAndSymptoms = matchingSymptoms.map(async (symptom) => {
     const matchingUser = await User.findById(symptom.user);
-    return matchingUser.email;
+    return { email: matchingUser.email, symptom: symptom };
   });
-  return Promise.all(userEmails);
+  return Promise.all(userEmailsAndSymptoms);
 };
 
 module.exports = {
