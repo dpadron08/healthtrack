@@ -9,7 +9,7 @@ const the_style = {
 };
 
 var photos = {
-  square: "pedigree/square.png",
+  male: "pedigree/male.png",
 };
 
 const FamilyHistory = () => {
@@ -36,21 +36,21 @@ const FamilyHistory = () => {
           title: "Thomas Williams",
           label: "Thomas Williams",
           description: "1st husband",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 2,
           title: "Mary Spencer",
           label: "Mary Spencer",
           description: "The Mary",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 3,
           title: "David Kirby",
           label: "David Kirby",
           description: "2nd Husband",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 4,
@@ -58,7 +58,7 @@ const FamilyHistory = () => {
           title: "Brad Williams",
           label: "Brad Williams",
           description: "1st son",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 5,
@@ -66,14 +66,14 @@ const FamilyHistory = () => {
           title: "Mike Kirby",
           label: "Mike Kirby",
           description: "2nd son, having 2 spouses",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 6,
           title: "Lynette Maloney",
           label: "Lynette Maloney",
           description: "Spouse I",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 11,
@@ -81,14 +81,14 @@ const FamilyHistory = () => {
           title: "Steven Powell",
           label: "Steven Powell",
           description: "1st son",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 7,
           title: "Sara Kemp",
           label: "Sara Kemp",
           description: "Spouse II",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 12,
@@ -96,7 +96,7 @@ const FamilyHistory = () => {
           title: "John Smith",
           label: "John Smith",
           description: "2ns son",
-          image: photos.square,
+          image: photos.male,
         },
         {
           id: 8,
@@ -104,7 +104,7 @@ const FamilyHistory = () => {
           title: "Leon Kemp",
           label: "Leon Kemp",
           description: "",
-          image: photos.square,
+          image: photos.male,
         },
       ],
     };
