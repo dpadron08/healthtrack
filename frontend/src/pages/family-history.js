@@ -10,7 +10,7 @@ const the_style = {
 };
 
 var photos = {
-  square: "square.png",
+  square: "pedigree/square.png",
 };
 
 const FamilyHistory = () => {
