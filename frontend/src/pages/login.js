@@ -74,7 +74,7 @@ const Login = () => {
           placeholder="Enter password"
         ></input>
       </div>
-      <button type="submit" class="btn btn-primary" onClick={handleSubmit}>
+      <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
         Submit
       </button>
     </form>

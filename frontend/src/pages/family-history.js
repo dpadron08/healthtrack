@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
@@ -14,6 +16,21 @@ var photos = {
 
 const FamilyHistory = () => {
   const [config, setConfig] = useState({});
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleCreateModalClose = () => {
+    setShowCreateModal(false);
+  };
+  const handleCreateModalShow = () => {
+    setShowCreateModal(true);
+  };
+  const handleEditModalClose = () => {
+    setShowEditModal(false);
+  };
+  const handleEditModalShow = () => {
+    setShowEditModal(true);
+  };
 
   useEffect(() => {
     const initialConfig = {
@@ -120,12 +137,53 @@ const FamilyHistory = () => {
   };
 
   return (
-    <div style={the_style}>
-      <FamDiagram centerOnCursor={true} config={config} />
-      <button type="submit" className="btn btn-primary" onClick={update}>
-        Update
-      </button>
-    </div>
+    <>
+      <div style={the_style}>
+        <FamDiagram centerOnCursor={true} config={config} />
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleCreateModalShow}
+        >
+          Create
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleEditModalShow}
+        >
+          Edit
+        </button>
+      </div>
+      <Modal show={showCreateModal} onHide={handleCreateModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create a family member</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Enter the family member fields</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCreateModalClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleCreateModalClose}>
+            Create
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showEditModal} onHide={handleEditModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit a family member</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Edit the family member fields</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleEditModalClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleEditModalClose}>
+            Save changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
