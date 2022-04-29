@@ -1,5 +1,5 @@
 import React from "react";
-import react, { useEffect } from "react";
+import { useEffect } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import symptomService from "../services/symptomService";
 

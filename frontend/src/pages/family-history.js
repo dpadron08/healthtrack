@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { OrgDiagram } from "basicprimitivesreact";
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
 
