@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
@@ -11,16 +12,45 @@ const the_style = {
 };
 
 var photos = {
+  adopted_female: "pedigree/adopted_female.png",
+  adopted_male: "pedigree/adopted_male.png",
+  asymptomatic_carrier_female: "pedigree/asymptomatic_carrier_female.png",
+  asymptomatic_carrier_male: "pedigree/asymptomatic_carrier_male.png",
+  female_carrier: "pedigree/female_carrier.png",
+  female_deceased: "pedigree/female_deceased.png",
+  female_trait: "pedigree/female_trait.png",
+  female: "pedigree/female.png",
+  male_carrier: "pedigree/male_carrier.png",
+  male_deceased: "pedigree/male_deceased.png",
+  male_trait: "pedigree/male_trait.png",
   male: "pedigree/male.png",
+  miscarriage: "pedigree/miscarriage.png",
+  sex_unspecified: "pedigree/sex_unspecified.png",
+  stillbirth_female: "pedigree/stillbirth_female.png",
+  stillbirth_male: "pedigree/stillbirth_male.png",
+  termination: "pedigree/termination.png",
 };
 
 const FamilyHistory = () => {
   const [config, setConfig] = useState({});
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const blankMemberForm = {
+    type: "",
+    name: "",
+    description: "",
+  };
+  const [formCreateData, setFormCreateData] = useState(blankMemberForm);
+  const { memberType, memberName, memberDescription } = formCreateData;
 
-  const handleCreateModalClose = () => {
+  const handleCreateModalClose = (isCreating) => {
     setShowCreateModal(false);
+    if (isCreating) {
+      addFamilyMember(formCreateData);
+    } else {
+      setFormCreateData(blankMemberForm);
+    }
+    // console.log(JSON.stringify(formCreateData));
   };
   const handleCreateModalShow = () => {
     setShowCreateModal(true);
@@ -128,12 +158,42 @@ const FamilyHistory = () => {
     setConfig(initialConfig);
   }, []);
 
+  const getHighestID = () => {
+    const { items } = config;
+    var highestID = 1;
+    items.forEach((familyItem) => {
+      if (familyItem.id > highestID) {
+        highestID = familyItem.id;
+      }
+    });
+    return highestID;
+  };
+
   const update = (e) => {
     e.preventDefault();
     const oldConfig = config;
     const { items } = config;
 
     setConfig({ ...oldConfig, items: items });
+  };
+
+  const onChangeForm = (e) => {
+    const { name, value } = e.target;
+    setFormCreateData({ ...formCreateData, [name]: value });
+  };
+
+  const addFamilyMember = (familyMember) => {
+    const newID = getHighestID() + 1;
+    const new_item = {
+      id: newID,
+      title: familyMember.name,
+      label: familyMember.name,
+      description: familyMember.description,
+      image: familyMember.type,
+    };
+    const { items } = config;
+    items.push(new_item);
+    setConfig({ ...config, items: items });
   };
 
   return (
@@ -159,12 +219,56 @@ const FamilyHistory = () => {
         <Modal.Header closeButton>
           <Modal.Title>Create a family member</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Enter the family member fields</Modal.Body>
+        <Modal.Body>
+          <p>Enter the family member fields</p>
+          <Form.Select name="type" value={memberType} onChange={onChangeForm}>
+            <option>Type:</option>
+            {Object.keys(photos).map((key) => {
+              return (
+                <option value={photos[key]} key={key}>
+                  {key}
+                </option>
+              );
+            })}
+          </Form.Select>
+          <>
+            <Form.Label htmlFor="name">Name</Form.Label>
+            <Form.Control
+              type="text"
+              id="name"
+              name="name"
+              value={memberName}
+              onChange={onChangeForm}
+              aria-describedby="nameHelpBlock"
+            />
+          </>
+          <>
+            <Form.Label htmlFor="description">Description</Form.Label>
+            <Form.Control
+              type="text"
+              id="description"
+              name="description"
+              value={memberDescription}
+              onChange={onChangeForm}
+              aria-describedby="descriptionHelpBlock"
+            />
+          </>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCreateModalClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleCreateModalClose(false);
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleCreateModalClose}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleCreateModalClose(true);
+            }}
+          >
             Create
           </Button>
         </Modal.Footer>
