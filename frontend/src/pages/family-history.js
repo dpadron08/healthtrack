@@ -39,9 +39,17 @@ const FamilyHistory = () => {
     type: "",
     name: "",
     description: "",
+    parent1: null,
+    parent2: null,
   };
   const [formCreateData, setFormCreateData] = useState(blankMemberForm);
-  const { memberType, memberName, memberDescription } = formCreateData;
+  const {
+    memberType,
+    memberName,
+    memberDescription,
+    memberParent1,
+    memberParent2,
+  } = formCreateData;
 
   const handleCreateModalClose = (isCreating) => {
     setShowCreateModal(false);
@@ -184,13 +192,25 @@ const FamilyHistory = () => {
 
   const addFamilyMember = (familyMember) => {
     const newID = getHighestID() + 1;
-    const new_item = {
-      id: newID,
-      title: familyMember.name,
-      label: familyMember.name,
-      description: familyMember.description,
-      image: familyMember.type,
-    };
+    var new_item;
+    if (familyMember.parent1 && familyMember.parent2) {
+      new_item = {
+        id: newID,
+        parents: [familyMember.parent1, familyMember.parent2],
+        title: familyMember.name,
+        label: familyMember.name,
+        description: familyMember.description,
+        image: familyMember.type,
+      };
+    } else {
+      new_item = {
+        id: newID,
+        title: familyMember.name,
+        label: familyMember.name,
+        description: familyMember.description,
+        image: familyMember.type,
+      };
+    }
     const { items } = config;
     items.push(new_item);
     setConfig({ ...config, items: items });
@@ -243,7 +263,7 @@ const FamilyHistory = () => {
             />
           </>
           <>
-            <Form.Label htmlFor="description">Description</Form.Label>
+            <Form.Label htmlFor="description">Description/Symptoms</Form.Label>
             <Form.Control
               type="text"
               id="description"
@@ -252,6 +272,44 @@ const FamilyHistory = () => {
               onChange={onChangeForm}
               aria-describedby="descriptionHelpBlock"
             />
+          </>
+          <>
+            <p>Parent 1</p>
+            <Form.Select
+              name="parent1"
+              value={memberParent1}
+              onChange={onChangeForm}
+            >
+              <option>Parent 1:</option>
+              {config.items
+                ? config.items.map((familyMember) => {
+                    return (
+                      <option value={familyMember.id} key={familyMember.id}>
+                        {familyMember.title}
+                      </option>
+                    );
+                  })
+                : "Loading"}
+            </Form.Select>
+          </>
+          <>
+            <p>Parent 2</p>
+            <Form.Select
+              name="parent2"
+              value={memberParent2}
+              onChange={onChangeForm}
+            >
+              <option>Parent 2:</option>
+              {config.items
+                ? config.items.map((familyMember) => {
+                    return (
+                      <option value={familyMember.id} key={familyMember.id}>
+                        {familyMember.title}
+                      </option>
+                    );
+                  })
+                : "Loading"}
+            </Form.Select>
           </>
         </Modal.Body>
         <Modal.Footer>
