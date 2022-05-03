@@ -76,7 +76,7 @@ const FamilyHistory = () => {
       cursorItem: 2,
       linesWidth: 1,
       linesColor: "black",
-      hasSelectorCheckbox: Enabled.True,
+      hasSelectorCheckbox: Enabled.False,
       normalLevelShift: 20,
       dotLevelShift: 20,
       lineLevelShift: 20,
