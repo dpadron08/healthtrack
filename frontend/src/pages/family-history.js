@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
+import { BiTrash } from "react-icons/bi";
 
 const the_style = {
   width: "100%",
@@ -19,7 +20,7 @@ var photos = {
   female_carrier: "pedigree/female_carrier.png",
   female_deceased: "pedigree/female_deceased.png",
   female_trait: "pedigree/female_trait.png",
-  female: "pedigree/female.png",
+  female: "pedigree/female.jpg",
   male_carrier: "pedigree/male_carrier.png",
   male_deceased: "pedigree/male_deceased.png",
   male_trait: "pedigree/male_trait.png",
@@ -32,7 +33,7 @@ var photos = {
 };
 
 const FamilyHistory = () => {
-  const [config, setConfig] = useState({});
+  const [items, setItems] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const blankMemberForm = {
@@ -70,36 +71,64 @@ const FamilyHistory = () => {
     setShowEditModal(true);
   };
 
+  const removeFamilyMember = (familyMember) => {
+    const id = familyMember.id;
+    // remove the family member with the given id and
+    // remove the family member as anyone's parent
+    const newItems = items
+      .filter((itemConfig) => {
+        return !(itemConfig.id === id);
+      })
+      .map((itemConfig) => {
+        var theConfig = { ...itemConfig };
+        if (theConfig.parents) {
+          const idx = theConfig.parents.indexOf(id);
+          if (idx > -1) {
+            theConfig.parents.splice(idx, 1);
+          }
+        }
+        return theConfig;
+      });
+    setItems(newItems);
+  };
+
+  const onTreeButtonsRender = ({ context: itemConfig }) => {
+    return (
+      <>
+        <button
+          key="2"
+          onClick={(e) => {
+            e.stopPropagation();
+            removeFamilyMember(itemConfig);
+          }}
+        >
+          <BiTrash />
+        </button>
+      </>
+    );
+  };
+
   useEffect(() => {
-    const initialConfig = {
-      pageFitMode: PageFitMode.None,
-      cursorItem: 2,
-      linesWidth: 1,
-      linesColor: "black",
-      hasSelectorCheckbox: Enabled.False,
-      normalLevelShift: 20,
-      dotLevelShift: 20,
-      lineLevelShift: 20,
-      normalItemsInterval: 10,
-      dotItemsInterval: 10,
-      lineItemsInterval: 10,
-      arrowsDirection: GroupByType.Parents,
-      showExtraArrows: false,
-      items: [
-        {
-          id: 1,
-          title: "Thomas Williams",
-          label: "Thomas Williams",
-          description: "1st husband",
-          image: photos.male,
-        },
-      ],
-    };
-    setConfig(initialConfig);
+    const the_items = [
+      {
+        id: 1,
+        title: "Thomas Williams",
+        label: "Thomas Williams",
+        description: "1st husband",
+        image: photos.male,
+      },
+      {
+        id: 2,
+        title: "Mary Williams",
+        label: "Mary Williams",
+        description: "1st wife",
+        image: photos.female,
+      },
+    ];
+    setItems(the_items);
   }, []);
 
   const getHighestID = () => {
-    const { items } = config;
     var highestID = 1;
     items.forEach((familyItem) => {
       if (familyItem.id > highestID) {
@@ -107,14 +136,6 @@ const FamilyHistory = () => {
       }
     });
     return highestID;
-  };
-
-  const update = (e) => {
-    e.preventDefault();
-    const oldConfig = config;
-    const { items } = config;
-
-    setConfig({ ...oldConfig, items: items });
   };
 
   const onChangeForm = (e) => {
@@ -128,7 +149,10 @@ const FamilyHistory = () => {
     if (familyMember.parent1 && familyMember.parent2) {
       new_item = {
         id: newID,
-        parents: [familyMember.parent1, familyMember.parent2],
+        parents: [
+          parseInt(familyMember.parent1),
+          parseInt(familyMember.parent2),
+        ],
         title: familyMember.name,
         label: familyMember.name,
         description: familyMember.description,
@@ -143,15 +167,34 @@ const FamilyHistory = () => {
         image: familyMember.type,
       };
     }
-    const { items } = config;
     items.push(new_item);
-    setConfig({ ...config, items: items });
+    setItems(items);
+  };
+
+  const initialConfig = {
+    pageFitMode: PageFitMode.None,
+    cursorItem: 2,
+    linesWidth: 1,
+    linesColor: "black",
+    hasSelectorCheckbox: Enabled.False,
+    hasButtons: Enabled.True,
+    onButtonsRender: onTreeButtonsRender,
+    buttonsPanelSize: 40,
+    normalLevelShift: 20,
+    dotLevelShift: 20,
+    lineLevelShift: 20,
+    normalItemsInterval: 10,
+    dotItemsInterval: 10,
+    lineItemsInterval: 10,
+    arrowsDirection: GroupByType.Parents,
+    showExtraArrows: false,
+    items: items,
   };
 
   return (
     <>
       <div style={the_style}>
-        <FamDiagram centerOnCursor={true} config={config} />
+        <FamDiagram centerOnCursor={true} config={initialConfig} />
         <button
           type="submit"
           className="btn btn-primary"
@@ -213,8 +256,8 @@ const FamilyHistory = () => {
               onChange={onChangeForm}
             >
               <option>Parent 1:</option>
-              {config.items
-                ? config.items.map((familyMember) => {
+              {items
+                ? items.map((familyMember) => {
                     return (
                       <option value={familyMember.id} key={familyMember.id}>
                         {familyMember.title}
@@ -232,8 +275,8 @@ const FamilyHistory = () => {
               onChange={onChangeForm}
             >
               <option>Parent 2:</option>
-              {config.items
-                ? config.items.map((familyMember) => {
+              {items
+                ? items.map((familyMember) => {
                     return (
                       <option value={familyMember.id} key={familyMember.id}>
                         {familyMember.title}
