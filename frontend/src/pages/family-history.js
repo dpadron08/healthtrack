@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
-import { BiTrash } from "react-icons/bi";
+import { BiTrash, BiEditAlt } from "react-icons/bi";
 
 const the_style = {
   width: "100%",
@@ -37,20 +37,21 @@ const FamilyHistory = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const blankMemberForm = {
-    type: "",
+    type: "pedigree/sex_unspecified.png",
     name: "",
     description: "",
-    parent1: null,
-    parent2: null,
+    parent1: 0,
+    parent2: 0,
   };
   const [formCreateData, setFormCreateData] = useState(blankMemberForm);
-  const {
+  var {
     memberType,
     memberName,
     memberDescription,
     memberParent1,
     memberParent2,
   } = formCreateData;
+  const [currentEditingID, setCurrentEditingID] = useState(0);
 
   const handleCreateModalClose = (isCreating) => {
     setShowCreateModal(false);
@@ -59,16 +60,35 @@ const FamilyHistory = () => {
     } else {
       setFormCreateData(blankMemberForm);
     }
-    // console.log(JSON.stringify(formCreateData));
   };
-  const handleCreateModalShow = () => {
+  const handleCreateModalShow = (itemConfig) => {
     setShowCreateModal(true);
   };
-  const handleEditModalClose = () => {
+  const handleEditModalClose = (isEditing) => {
     setShowEditModal(false);
+    if (isEditing) {
+      editFamilyMember(formCreateData);
+    } else {
+      setFormCreateData(blankMemberForm);
+    }
   };
-  const handleEditModalShow = () => {
+  const handleEditModalShow = (itemConfig) => {
     setShowEditModal(true);
+    setCurrentEditingID(itemConfig.id);
+    setFormCreateData({
+      type: itemConfig.image,
+      name: itemConfig.title,
+      description: itemConfig.description,
+    });
+    if (itemConfig.parents) {
+      setFormCreateData({ ...formCreateData, parent1: itemConfig.parents[0] });
+      if (itemConfig.parents.length > 1) {
+        setFormCreateData({
+          ...formCreateData,
+          parent2: itemConfig.parents[1],
+        });
+      }
+    }
   };
 
   const removeFamilyMember = (familyMember) => {
@@ -92,9 +112,49 @@ const FamilyHistory = () => {
     setItems(newItems);
   };
 
+  const editFamilyMember = (editedFamilyMember) => {
+    const newItems = items.map((oldItemConfig) => {
+      if (!(oldItemConfig.id === currentEditingID)) {
+        return oldItemConfig;
+      } else {
+        if (editedFamilyMember.parent1 && editedFamilyMember.parent2) {
+          return {
+            id: currentEditingID,
+            parents: [
+              parseInt(editedFamilyMember.parent1),
+              parseInt(editedFamilyMember.parent2),
+            ],
+            title: editedFamilyMember.name,
+            label: editedFamilyMember.name,
+            description: editedFamilyMember.description,
+            image: editedFamilyMember.type,
+          };
+        } else {
+          return {
+            id: currentEditingID,
+            title: editedFamilyMember.name,
+            label: editedFamilyMember.name,
+            description: editedFamilyMember.description,
+            image: editedFamilyMember.type,
+          };
+        }
+      }
+    });
+    setItems(newItems);
+  };
+
   const onTreeButtonsRender = ({ context: itemConfig }) => {
     return (
       <>
+        <button
+          key="1"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleEditModalShow(itemConfig);
+          }}
+        >
+          <BiEditAlt />
+        </button>
         <button
           key="2"
           onClick={(e) => {
@@ -202,13 +262,6 @@ const FamilyHistory = () => {
         >
           Create
         </button>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={handleEditModalShow}
-        >
-          Edit
-        </button>
       </div>
       <Modal show={showCreateModal} onHide={handleCreateModalClose}>
         <Modal.Header closeButton>
@@ -306,16 +359,103 @@ const FamilyHistory = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* EDIT MODAL HERE*/}
       <Modal show={showEditModal} onHide={handleEditModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit a family member</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Edit the family member fields</Modal.Body>
+        <Modal.Body>
+          <p>Edit the family member fields</p>
+          <Form.Select
+            name="type"
+            value={formCreateData.type}
+            onChange={onChangeForm}
+          >
+            <option>Type:</option>
+            {Object.keys(photos).map((key) => {
+              return (
+                <option value={photos[key]} key={key}>
+                  {key}
+                </option>
+              );
+            })}
+          </Form.Select>
+          <>
+            <Form.Label htmlFor="name">Name</Form.Label>
+            <Form.Control
+              type="text"
+              id="name"
+              name="name"
+              value={formCreateData.name}
+              onChange={onChangeForm}
+              aria-describedby="nameHelpBlock"
+            />
+          </>
+          <>
+            <Form.Label htmlFor="description">Description/Symptoms</Form.Label>
+            <Form.Control
+              type="text"
+              id="description"
+              name="description"
+              value={formCreateData.description}
+              onChange={onChangeForm}
+              aria-describedby="descriptionHelpBlock"
+            />
+          </>
+          <>
+            <p>Parent 1</p>
+            <Form.Select
+              name="parent1"
+              value={formCreateData.parent1}
+              onChange={onChangeForm}
+            >
+              <option>Parent 1:</option>
+              {items
+                ? items.map((familyMember) => {
+                    return (
+                      <option value={familyMember.id} key={familyMember.id}>
+                        {familyMember.title}
+                      </option>
+                    );
+                  })
+                : "Loading"}
+            </Form.Select>
+          </>
+          <>
+            <p>Parent 2</p>
+            <Form.Select
+              name="parent2"
+              value={formCreateData.parent2}
+              onChange={onChangeForm}
+            >
+              <option>Parent 2:</option>
+              {items
+                ? items.map((familyMember) => {
+                    return (
+                      <option value={familyMember.id} key={familyMember.id}>
+                        {familyMember.title}
+                      </option>
+                    );
+                  })
+                : "Loading"}
+            </Form.Select>
+          </>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditModalClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleEditModalClose(false);
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleEditModalClose}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleEditModalClose(true);
+            }}
+          >
             Save changes
           </Button>
         </Modal.Footer>
