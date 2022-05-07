@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 // @access  Private
 const getSymptoms = async (req, res) => {
   const symptoms = await Symptom.find({ user: req.user.id });
-  res.status(200).json({symptoms: symptoms});
+  res.status(200).json({ symptoms: symptoms });
 };
 
 // @desc    Get a particular symptom
@@ -14,8 +14,8 @@ const getSymptoms = async (req, res) => {
 // @access  Private
 const getSymptom = async (req, res) => {
   const id = req.params.id;
-  const symptoms = await Symptom.find({ user: req.user.id, _id:id });
-  res.status(200).json({symptoms: symptoms});
+  const symptoms = await Symptom.find({ user: req.user.id, _id: id });
+  res.status(200).json({ symptoms: symptoms });
 };
 
 // @desc    Submit symptoms
@@ -44,6 +44,7 @@ const updateSymptom = async (req, res) => {
   }
   if (!req.body.text) {
     res.status(400).json("Please include a text with the symptom");
+    return;
   }
 
   const user = await User.findById(req.user.id);

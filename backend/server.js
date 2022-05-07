@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const symptomRouter = require("./routes/symptom.route.js");
 const matchRouter = require("./routes/match.route");
+const treeRouter = require("./routes/tree.route");
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) =>
 app.use("/api/users", userRouter);
 app.use("/api/symptoms", symptomRouter);
 app.use("/api/matches", matchRouter);
+app.use("/api/tree", treeRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({ error: "Not found!" });
