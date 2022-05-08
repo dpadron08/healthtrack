@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import { PageFitMode, Enabled, GroupByType } from "basicprimitives";
 import { FamDiagram } from "basicprimitivesreact";
 import { BiTrash, BiEditAlt } from "react-icons/bi";
+import treeService from "../services/treeService";
 
 const the_style = {
   width: "100%",
@@ -168,25 +169,45 @@ const FamilyHistory = () => {
     );
   };
 
-  useEffect(() => {
-    const the_items = [
-      {
-        id: 1,
-        title: "Thomas Williams",
-        label: "Thomas Williams",
-        description: "1st husband",
-        image: photos.male,
-      },
-      {
-        id: 2,
-        title: "Mary Williams",
-        label: "Mary Williams",
-        description: "1st wife",
-        image: photos.female,
-      },
-    ];
-    setItems(the_items);
-  }, []);
+  const retreiveTree = () => {
+    // local storage only stores strings
+    const userCookie = JSON.parse(localStorage.getItem("user"));
+    if (!userCookie) {
+      setItems([]);
+      return;
+    }
+    const token = userCookie["token"];
+
+    if (!token) {
+      setItems([]);
+      console.log("Error, user cookie found with no token");
+      return;
+    }
+    treeService.getTree(token).then((data) => {
+      setItems(data);
+    });
+  };
+
+  useEffect(retreiveTree, []);
+
+  const updateTree = () => {
+    // local storage only stores strings
+    const userCookie = JSON.parse(localStorage.getItem("user"));
+    if (!userCookie) {
+      setItems([]);
+      return;
+    }
+    const token = userCookie["token"];
+
+    if (!token) {
+      setItems([]);
+      console.log("Error, user cookie found with no token");
+      return;
+    }
+    treeService.updateTree(token, items).then((data) => {
+      console.log(data);
+    });
+  };
 
   const getHighestID = () => {
     var highestID = 1;
@@ -261,6 +282,9 @@ const FamilyHistory = () => {
           onClick={handleCreateModalShow}
         >
           Create
+        </button>{" "}
+        <button type="submit" className="btn btn-primary" onClick={updateTree}>
+          Save Tree
         </button>
       </div>
       <Modal show={showCreateModal} onHide={handleCreateModalClose}>
