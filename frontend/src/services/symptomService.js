@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000" + "/api/symptoms/";
+// const API_URL = "http://localhost:8000" + "/api/symptoms/";
+const API_URL = "/api/symptoms/";
 
 // create a new symptom
 const createSymptom = async (symptomData, token) => {

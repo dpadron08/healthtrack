@@ -1,0 +1,28 @@
+{
+  "name": "healthtrack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpadron08/healthtrack.git"
+  },
+  "author": "David Padron Castillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpadron08/healthtrack/issues"
+  },
+  "homepage": "https://github.com/dpadron08/healthtrack#readme",
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "nodemon": "^2.0.16"
+  }
+}

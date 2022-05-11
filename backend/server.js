@@ -21,17 +21,23 @@ const db = mongoose.connection;
 db.on("error", () => console.log("database connection failed"));
 db.once("open", () => console.log("database connection successful"));
 
-app.get("/", (req, res) =>
-  res.json({ message: "Incorrect api call. Please do /api/{resource}" })
-);
 app.use("/api/users", userRouter);
 app.use("/api/symptoms", symptomRouter);
 app.use("/api/matches", matchRouter);
 app.use("/api/tree", treeRouter);
 
-app.use("*", (req, res) => {
-  res.status(404).json({ error: "Not found!" });
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "../frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "../", "frontend", "build", "index.html")
+    );
+  });
+} else {
+  app.get("/", (req, res) =>
+    res.json({ message: "Incorrect api call. Please do /api/{resource}" })
+  );
+}
 
 app.listen(port, () => {
   console.log("App is running on port " + port);

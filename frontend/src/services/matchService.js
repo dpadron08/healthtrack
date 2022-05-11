@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000" + "/api/matches/";
+// const API_URL = "http://localhost:8000" + "/api/matches/";
+const API_URL = "/api/matches/";
 
 const getMatches = async (token) => {
   const config = {

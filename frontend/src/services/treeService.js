@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000" + "/api/tree/";
+// const API_URL = "http://localhost:8000" + "/api/tree/";
+const API_URL = "/api/tree/";
 
 // get this user's tree
 const getTree = async (token) => {
